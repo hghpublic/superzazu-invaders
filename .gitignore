@@ -4,3 +4,6 @@ build/
 build-web/
 res/
 roms/
+
+# cmake
+/build/
