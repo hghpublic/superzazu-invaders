@@ -1,0 +1,10 @@
+= git
+
+== submodules
+
+----
+❯ git submodule status
+ 274ffd700b81baabea99b0963bc1260b67132185 deps/8080 (1.3.0-6-g274ffd7)
++083519bcbf0c667e305e769e1ef24690ac42f574 deps/SDL_nmix (1.1.0-2-g083519b)
++b00e4a318fc7e4074b67f75dbb22373e1e07c56b deps/SDL_sound (v2.0.2-82-gb00e4a3)
+----
