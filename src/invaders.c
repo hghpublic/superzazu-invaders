@@ -67,7 +67,9 @@ static void port_out(void* userdata, uint8_t port, uint8_t value) {
 
   case 3: // 0003pw: SOUND1
     // plays a sound from bank 1
+#if defined(HAS_SOUND)
     invaders_play_sound(si, 1);
+#endif
     break;
 
   case 4: // 0004pw: SHFT_DATA
@@ -78,7 +80,9 @@ static void port_out(void* userdata, uint8_t port, uint8_t value) {
 
   case 5: // 0005pw: SOUND2
     // plays a sound from bank 2
+#if defined(HAS_SOUND)
     invaders_play_sound(si, 2);
+#endif
     break;
 
   case 6: // 0006pw: WATCHDOG
@@ -88,6 +92,7 @@ static void port_out(void* userdata, uint8_t port, uint8_t value) {
   }
 }
 
+#if defined(HAS_SOUND)
 static inline NMIX_FileSource* load_sound(const char* filename) {
   SDL_RWops* f = SDL_RWFromFile(filename, "rb");
   if (f == NULL) {
@@ -103,6 +108,7 @@ static inline NMIX_FileSource* load_sound(const char* filename) {
 
   return source1;
 }
+#endif
 
 void invaders_init(invaders* const si) {
   i8080_init(&si->cpu);
@@ -150,6 +156,7 @@ void invaders_init(invaders* const si) {
   si->colored_screen = true;
   si->update_screen = NULL;
 
+  #if defined(HAS_SOUND)
   // load sounds
   si->sounds[0] = load_sound("roms/8.wav"); // ufo sound
   si->sounds[1] = load_sound("roms/1.wav"); // shoot sound
@@ -160,6 +167,7 @@ void invaders_init(invaders* const si) {
   si->sounds[6] = load_sound("roms/6.wav"); // alien move 3
   si->sounds[7] = load_sound("roms/7.wav"); // alien move 4
   si->sounds[8] = load_sound("roms/0.wav"); // ufo hit
+#endif
 }
 
 // advances emulation for `ms` milliseconds.
@@ -279,6 +287,7 @@ void invaders_gpu_update(invaders* const si) {
   si->update_screen(si);
 }
 
+#if defined(HAS_SOUND)
 void invaders_play_sound(invaders* const si, uint8_t bank) {
   // plays a sound if the corresponding bit have changed from 0 to 1
   uint8_t data = si->cpu.a;
@@ -327,6 +336,7 @@ void invaders_play_sound(invaders* const si, uint8_t bank) {
     NMIX_Play(si->sounds[sound_to_play]->source);
   }
 }
+#endif
 
 // loads up a rom file at a specific address in memory (start_addr)
 int invaders_load_rom(

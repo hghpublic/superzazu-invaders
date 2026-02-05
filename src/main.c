@@ -3,7 +3,7 @@
 #include <emscripten.h>
 #endif
 
-#include "SDL_nmix.h"
+// #include "SDL_nmix.h"
 #include "invaders.h"
 
 #define JOYSTICK_DEAD_ZONE 8000
@@ -176,6 +176,7 @@ int main(void) {
     return 1;
   }
 
+#if defined(HAS_SOUND)
   if (Sound_Init() == 0) {
     SDL_Log("Unable to initialise SDL_sound: %s", Sound_GetError());
     return 1;
@@ -187,6 +188,7 @@ int main(void) {
     return -1;
   }
   NMIX_SetMasterGain(.5);
+#endif
 
   // create SDL window
   SDL_Window* window = SDL_CreateWindow("Space Invaders",
@@ -332,8 +334,10 @@ int main(void) {
     SDL_JoystickClose(joystick);
   }
 
+#if defined(HAS_SOUND)
   NMIX_CloseAudio();
   Sound_Quit();
+#endif
   SDL_DestroyTexture(texture);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);

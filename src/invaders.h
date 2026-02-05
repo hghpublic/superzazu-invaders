@@ -4,10 +4,10 @@
 #include <string.h>
 #include <SDL.h>
 
-#include "SDL_nmix.h"
-#include "SDL_nmix_file.h"
+// #include "SDL_nmix.h"
+// #include "SDL_nmix_file.h"
 
-#include "8080/i8080.h"
+#include <i8080.h>
 
 #define SCREEN_WIDTH 224
 #define SCREEN_HEIGHT 256
@@ -24,7 +24,9 @@ struct invaders {
 
   uint8_t next_interrupt;
   bool colored_screen;
+#if defined(HAS_SOUND)
   NMIX_FileSource* sounds[9];
+#endif
 
   // SI-specific ports & shift registers that are used in IN/OUT opcodes
   uint8_t port1, port2;
@@ -41,7 +43,9 @@ struct invaders {
 void invaders_init(invaders* const si);
 void invaders_update(invaders* const si, int ms);
 void invaders_gpu_update(invaders* const si);
+#if defined(HAS_SOUND)
 void invaders_play_sound(invaders* const si, uint8_t bank);
+#endif
 int invaders_load_rom(
     invaders* const si, const char* filename, uint16_t start_addr);
 
