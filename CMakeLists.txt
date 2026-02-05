@@ -15,35 +15,31 @@ include(FetchContent)
 
 FetchContent_Declare(
   i8080
-  GIT_REPOSITORY https://github.com/hghpublic/superzazu-8080.git
+  GIT_REPOSITORY https://github.com/hghpublic/superzazu-8080
   GIT_TAG        dev/0
 )
 
 # SDL_nmix
 
-# FetchContent_Declare(
-#   i8080
-#   GIT_REPOSITORY https://github.com/superzazu/SDL_nmix.git
-#   GIT_TAG        dev/0
-# )
+FetchContent_Declare(
+  SDL_nmix
+  GIT_REPOSITORY https://github.com/hghpublic/superzazu-SDL_nmix
+  GIT_TAG        dev/0
+)
 
 # SDL_sound
 
-# FetchContent_Declare(
-#   i8080
-#   GIT_REPOSITORY https://github.com/superzazu/SDL_nmix.git
-#   GIT_TAG        dev/0
-# )
+FetchContent_Declare(
+  SDL_sound
+  GIT_REPOSITORY https://github.com/hghpublic/icculus-SDL_sound
+  GIT_TAG        SDL_sound/2.0.3/gltron
+)
 
 
-FetchContent_MakeAvailable(i8080)
+FetchContent_MakeAvailable(i8080 SDL_nmix SDL_sound)
 
 # invaders
 
-set(SOURCES
-  src/main.c
-  src/invaders.c
-)
 set(ROMS_DIR "./roms/" CACHE STRING "Path to directory containing rom files")
 
 set(target invaders)
@@ -84,5 +80,7 @@ option(SDLSOUND_BUILD_SHARED "" OFF)
 option(SDLSOUND_BUILD_TEST "" OFF)
 
 # target_link_libraries(${target} PRIVATE SDL2_sound-static)
-target_link_libraries(${target} PRIVATE i8080)
+target_link_libraries(${target} PRIVATE i8080 SDL2_sound)
 target_include_directories(${target} PRIVATE src)
+
+add_subdirectory(src)
